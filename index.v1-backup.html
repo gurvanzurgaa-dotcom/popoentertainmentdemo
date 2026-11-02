@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>POPO Entertainment</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Manrope:wght@400;500;700;800&family=Caveat:wght@600;700&family=Playfair+Display:ital,wght@0,700;1,600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#07060d; --bg2:#0f0d1a; --card:#151226; --card2:#1c1833; --line:#2a2545;
+  --ink:#f3f0ff; --muted:#a49fc0; --dim:#79739a;
+  --pink:#ff3fa4; --cyan:#2ee6ff; --gold:#ffc83d; --green:#2bd97c; --red:#ff5468;
+  --popo-red:#d7192d; --popo-yellow:#f3d630; --taste:#d9a273; --play:#ff4d5e; --enjoy:#9bd34a;
+  --radius:18px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:Manrope,system-ui,sans-serif;line-height:1.5;overflow-x:hidden}
+h1,h2,h3,.disp{font-family:Unbounded,system-ui,sans-serif;letter-spacing:-.01em}
+a{color:inherit}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none;text-align:inherit}
+:focus-visible{outline:2px solid var(--popo-yellow);outline-offset:2px}
+#scene{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+.wrap{max-width:1240px;margin:0 auto;padding:0 16px;position:relative;z-index:1}
+
+/* brand lockup (from the printed menu: black ENTERTAINMENT over red POPO) */
+.brand{display:inline-flex;flex-direction:column;align-items:center;line-height:1;background:#fff;border-radius:12px;padding:6px 12px 5px;text-decoration:none;box-shadow:0 0 0 1px rgba(255,255,255,.1),0 6px 24px rgba(0,0,0,.35)}
+.brand small{font:800 8px/1 Manrope,sans-serif;letter-spacing:.32em;color:#111;margin-right:-.32em}
+.brand b{font:700 22px/1 "Playfair Display",Georgia,serif;color:var(--popo-red);letter-spacing:.04em;margin-top:2px}
+
+/* nav */
+nav{position:sticky;top:0;z-index:20;backdrop-filter:blur(14px);background:color-mix(in srgb,var(--bg) 72%,transparent);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;height:66px;gap:12px}
+.links{display:flex;gap:4px}
+.links a{text-decoration:none;font-size:14px;padding:8px 12px;border-radius:99px;color:var(--muted)}
+.links a:hover{color:var(--ink);background:var(--card)}
+.cta{display:inline-flex;align-items:center;gap:8px;background:var(--pink);color:#fff;font-weight:800;padding:10px 18px;border-radius:99px;box-shadow:0 0 24px color-mix(in srgb,var(--pink) 55%,transparent);text-decoration:none;font-size:14px;white-space:nowrap}
+.cta svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+@media (max-width:860px){.links{display:none}}
+
+/* hero */
+.hero{min-height:calc(100vh - 66px);display:flex;align-items:center;position:relative;z-index:1}
+.hero .wrap{width:100%}
+.kicker{display:inline-flex;gap:8px;align-items:center;font-size:12px;letter-spacing:.25em;text-transform:uppercase;color:var(--cyan);border:1px solid color-mix(in srgb,var(--cyan) 40%,transparent);padding:6px 14px;border-radius:99px}
+.kicker i{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green)}
+.hero h1{margin:22px 0 10px;line-height:.9}
+.hero h1 .ent{display:block;font:800 clamp(12px,1.8vw,20px)/1 Manrope,sans-serif;letter-spacing:.5em;color:var(--ink);margin-bottom:10px}
+.hero h1 .p{display:block;font:700 clamp(84px,17vw,210px)/.86 "Playfair Display",Georgia,serif;color:var(--popo-red);letter-spacing:.02em;text-shadow:0 0 50px color-mix(in srgb,var(--popo-red) 55%,transparent)}
+.slogan{font:900 clamp(26px,4.4vw,48px)/1.02 Unbounded,sans-serif;display:flex;gap:.35em;flex-wrap:wrap;margin:14px 0 18px}
+.slogan span:nth-child(1){color:var(--taste)} .slogan span:nth-child(2){color:var(--play)} .slogan span:nth-child(3){color:var(--enjoy)}
+.hero p.lead{max-width:520px;color:var(--muted);font-size:18px}
+.hero .btns{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+.ghost{border:1px solid var(--line);padding:10px 18px;border-radius:99px;text-decoration:none;font-size:14px;font-weight:700;background:color-mix(in srgb,var(--card) 60%,transparent)}
+.stats{display:flex;gap:28px;flex-wrap:wrap;margin-top:44px}
+.stats div{font-size:13px;color:var(--muted)}
+.stats b{display:block;font-family:Unbounded;font-size:26px;color:var(--ink)}
+
+section{padding:96px 0;position:relative;z-index:1}
+.sec-head{display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap;margin-bottom:28px}
+.sec-head h2{font-size:clamp(30px,5vw,52px);font-weight:900;line-height:1}
+.sec-head h2 em{font-style:normal;color:var(--pink)}
+.sec-head p{color:var(--muted);max-width:440px}
+.solid{background:linear-gradient(180deg,transparent,var(--bg) 140px)}
+
+/* ===== menu ===== */
+.tabs{display:flex;gap:8px;overflow-x:auto;padding:4px 2px 12px;margin-bottom:18px;scrollbar-width:thin;scroll-snap-type:x proximity}
+.tab{flex:none;padding:10px 16px;border-radius:99px;border:1px solid var(--line);background:var(--card);font-weight:800;font-size:14px;color:var(--muted);transition:.2s;scroll-snap-align:start;white-space:nowrap}
+.tab:hover{color:var(--ink)}
+.tab[aria-selected="true"]{background:var(--popo-yellow);color:#111;border-color:var(--popo-yellow);box-shadow:0 0 22px color-mix(in srgb,var(--popo-yellow) 40%,transparent)}
+.tabs .sep{flex:none;width:1px;background:var(--line);margin:4px 4px}
+
+.menu-layout{display:grid;grid-template-columns:minmax(0,1fr) 440px;gap:24px;align-items:start}
+@media (max-width:980px){.menu-layout{grid-template-columns:minmax(0,1fr)}.menu-layout .stage{order:-1}}
+
+/* page header echoing the printed menu: giant POPO + yellow script circle */
+.page-head{position:relative;height:150px;margin-bottom:10px;overflow:hidden;border-radius:22px;background:#f4f2ec}
+.page-head .big{position:absolute;left:-6px;right:-6px;bottom:-30px;font:900 150px/1 Unbounded,sans-serif;color:#111;letter-spacing:-.02em;white-space:nowrap;text-align:center}
+.page-head .circle{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(-8deg);width:132px;height:132px;border-radius:50%;background:var(--popo-yellow);display:grid;place-items:center;text-align:center;font:700 29px/0.95 Caveat,cursive;color:#111;padding:14px}
+.page-head .circle::after{content:"";position:absolute;inset:-9px -5px -5px -12px;border:1.5px solid #222;border-radius:50% 46% 52% 48%;transform:rotate(14deg)}
+@media (max-width:560px){.page-head{height:120px}.page-head .big{font-size:104px;bottom:-22px}.page-head .circle{width:108px;height:108px;font-size:24px}}
+
+.cat{margin:26px 0 12px;display:flex;align-items:baseline;gap:12px}
+.cat h3{font-size:18px;font-weight:700}
+.cat span{color:var(--dim);font-size:13px}
+.cat::after{content:"";flex:1;height:1px;background:var(--line)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px;perspective:1000px}
+.item{position:relative;width:100%;background:linear-gradient(160deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:var(--radius);padding:16px;transform-style:preserve-3d;transition:transform .15s ease-out,border-color .2s,box-shadow .2s;display:flex;flex-direction:column;gap:6px;min-height:128px}
+.item:hover{border-color:color-mix(in srgb,var(--popo-yellow) 55%,transparent)}
+.item[aria-pressed="true"]{border-color:var(--popo-yellow);box-shadow:0 0 0 1px var(--popo-yellow),0 10px 40px -10px color-mix(in srgb,var(--popo-yellow) 45%,transparent)}
+.item .glow{position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(240px circle at var(--mx,50%) var(--my,50%),color-mix(in srgb,var(--popo-yellow) 16%,transparent),transparent 60%);opacity:0;transition:opacity .2s}
+.item:hover .glow{opacity:1}
+.chips{display:flex;gap:6px;transform:translateZ(36px);margin-bottom:4px}
+.lchip{height:48px;max-width:150px;display:flex;align-items:center}
+.lchip img{max-height:46px;max-width:150px;display:block;object-fit:contain;filter:drop-shadow(0 2px 8px rgba(0,0,0,.5))}
+/* dark brand marks are shown reversed (white) so they read on the dark cards */
+img.mono{filter:brightness(0) invert(1) drop-shadow(0 2px 8px rgba(0,0,0,.5));opacity:.92}
+.item .nm{font-weight:800;font-size:15px;line-height:1.25;transform:translateZ(26px)}
+.item .ty{font-size:12px;color:var(--cyan);letter-spacing:.04em;transform:translateZ(18px)}
+.item .ds{font-size:13px;color:var(--muted);transform:translateZ(14px);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.item .pr{margin-top:auto;padding-top:6px;display:flex;gap:14px;flex-wrap:wrap;align-items:baseline;transform:translateZ(26px)}
+.price{font-family:Unbounded;font-weight:700;font-size:16px;white-space:nowrap}
+.pr small{font-family:Manrope;font-weight:700;font-size:11px;color:var(--dim);margin-right:5px;letter-spacing:.05em}
+.serve{margin-top:18px;padding:14px 16px;border:1px dashed var(--line);border-radius:14px;color:var(--muted);font-size:14px}
+.serve b{color:var(--ink)}
+.note{color:var(--dim);font-size:13px;margin-top:20px}
+
+/* details + how-to-order panel */
+.stage{position:sticky;top:84px;border-radius:24px;border:1px solid var(--line);background:radial-gradient(120% 70% at 50% 0%,#221b3f 0%,#120f22 55%,#0c0a16 100%);overflow:hidden}
+.info{padding:22px 22px 20px}
+.info .kick{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);margin-bottom:12px;display:flex;gap:7px;align-items:center}
+.info .kick i{width:6px;height:6px;border-radius:50%;background:var(--popo-yellow);box-shadow:0 0 8px var(--popo-yellow)}
+.info .logos{display:flex;gap:16px;align-items:center;min-height:0;margin-bottom:14px}
+.info .logos img{max-height:60px;max-width:190px;object-fit:contain}
+.info h3{font-size:22px;font-weight:900;line-height:1.15}
+.info .ty{color:var(--cyan);font-size:13px;margin-top:4px}
+.info .prices{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.info .prices span{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:7px 12px}
+.info .prices .price{color:var(--popo-yellow)}
+.info p{color:var(--muted);font-size:14px;margin-top:12px}
+.info p b{color:var(--ink)}
+.info ul{list-style:none;margin-top:12px;display:grid;gap:5px;font-size:14px;color:var(--muted)}
+.info ul li::before{content:"·";color:var(--popo-yellow);font-weight:900;margin-right:8px}
+.meters{display:grid;gap:6px;margin-top:12px}
+.meters div{display:grid;grid-template-columns:120px 1fr;align-items:center;font-size:13px;color:var(--muted)}
+.stars{font-size:17px;letter-spacing:2px;background:linear-gradient(90deg,var(--popo-yellow) var(--v),#3a3458 var(--v));-webkit-background-clip:text;background-clip:text;color:transparent;width:max-content}
+.howto{border-top:1px solid var(--line);padding:18px 22px 22px;background:color-mix(in srgb,var(--bg) 45%,transparent)}
+.howto h4{font:700 13px Unbounded,sans-serif;margin-bottom:12px}
+.howto ol{list-style:none;counter-reset:s;display:grid;gap:10px}
+.howto li{counter-increment:s;display:grid;grid-template-columns:26px 1fr;gap:10px;font-size:13.5px;color:var(--muted);align-items:start}
+.howto li::before{content:counter(s);width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:var(--popo-yellow);color:#111;font:800 12px Manrope,sans-serif}
+.howto li b{color:var(--ink)}
+.howto a{color:var(--popo-yellow);font-weight:800;text-decoration:none}
+@media (max-width:980px){
+  .stage{position:static}
+  .stage .info{display:none}
+  .howto{border-top:0}
+  .item[aria-pressed="true"] .ds{-webkit-line-clamp:unset}
+}
+
+/* play */
+.play{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;perspective:1200px}
+.venue{border-radius:24px;padding:28px;border:1px solid var(--line);background:var(--card);position:relative;overflow:hidden;transform-style:preserve-3d;transition:transform .15s ease-out}
+.venue::before{content:"";position:absolute;width:320px;height:320px;border-radius:50%;right:-120px;top:-120px;background:radial-gradient(circle,color-mix(in srgb,var(--accent) 40%,transparent),transparent 70%)}
+.venue h3{font-size:28px;font-weight:900;position:relative}
+.venue .sub{color:var(--muted);position:relative;margin:6px 0 20px}
+.rates{list-style:none;position:relative;display:grid;gap:10px}
+.rates li{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-radius:14px;background:color-mix(in srgb,var(--bg) 60%,transparent);border:1px solid var(--line);gap:12px}
+.rates li small{display:block;color:var(--dim);font-size:12px}
+.rates .price{color:var(--accent)}
+
+/* call to book */
+.call{border-radius:28px;padding:44px 36px;background:radial-gradient(700px 300px at 0% 0%,color-mix(in srgb,var(--pink) 28%,transparent),transparent),radial-gradient(600px 280px at 100% 100%,color-mix(in srgb,var(--popo-yellow) 18%,transparent),transparent),var(--card);border:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:28px;flex-wrap:wrap}
+.call h2{font-size:clamp(26px,4.4vw,46px);font-weight:900;line-height:1.05;max-width:640px}
+.call h2 a{color:var(--popo-yellow);text-decoration:none;white-space:nowrap}
+.call p{color:var(--muted);margin-top:10px}
+.call .cta{font-size:20px;padding:16px 28px}
+.call .cta svg{width:22px;height:22px}
+.calls{display:flex;flex-direction:column;gap:12px}
+.cta.alt{background:transparent;border:2px solid var(--pink);box-shadow:none}
+.contact{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-top:16px}
+.cc{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px 20px}
+.cc h5{font:700 13px Unbounded,sans-serif;color:var(--popo-yellow);margin-bottom:8px}
+.cc p{font-size:15px;font-weight:700}
+.cc small{display:block;color:var(--dim);font-size:12px;margin-top:4px}
+.cc a{color:var(--ink);text-decoration:none;border-bottom:1px dashed var(--dim)}
+footer a{color:var(--ink)}
+
+footer{border-top:1px solid var(--line);padding:48px 0 60px;position:relative;z-index:1;background:var(--bg)}
+footer .wrap{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:24px;color:var(--muted);font-size:14px}
+footer h5{font-family:Unbounded;color:var(--ink);font-size:14px;margin-bottom:10px}
+footer p{margin:4px 0}
+.age{margin-top:28px;color:var(--dim);font-size:12px;grid-column:1/-1}
+@media (prefers-reduced-motion:reduce){.item,.venue{transition:none}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<canvas id="scene" aria-hidden="true"></canvas>
+
+<nav>
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Entertainment POPO"><small>ENTERTAINMENT</small><b>POPO</b></a>
+    <div class="links">
+      <a href="#menu" data-jump="food">Food</a><a href="#menu" data-jump="beer">Drinks</a><a href="#menu" data-jump="cocktails">Cocktails</a><a href="#play">Billiards &amp; Karaoke</a><a href="#book">Contact</a>
+    </div>
+    <a class="cta" href="tel:+97677808800"><svg viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg>7780-8800</a>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <span class="kicker"><i></i><span id="openState">Open tonight</span></span>
+    <h1><span class="ent">ENTERTAINMENT</span><span class="p">POPO</span></h1>
+    <div class="slogan" aria-label="taste play enjoy"><span>taste</span><span>play</span><span>enjoy</span></div>
+    <p class="lead">Pizza, fried chicken and sharing platters, cocktails, cold beer and a full bar, with pool tables and private karaoke rooms. Call 7780-8800 to book.</p>
+    <div class="btns">
+      <a class="cta" href="#menu">See the menu</a>
+      <a class="ghost" href="#book">Book: 7780-8800</a>
+    </div>
+    <div class="stats">
+      <div><b id="statItems">145</b>Menu items</div>
+      <div><b>4</b>Pool tables</div>
+      <div><b>3</b>Karaoke rooms</div>
+      <div><b id="heroHours">14–03</b>Open daily</div>
+    </div>
+  </div>
+</header>
+
+<section id="menu" class="solid">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>The <em>menu</em></h2>
+      <p>Everything from our printed menu, in ₮. Tap any item for details.</p>
+    </div>
+    <div class="tabs" role="tablist" id="tabs" aria-label="Menu sections"></div>
+    <div class="menu-layout">
+      <div id="menuList"></div>
+      <aside class="stage" id="stage" aria-label="Item details and how to order">
+        <div class="info" id="info" aria-live="polite"></div>
+        <div class="howto">
+          <h4>How to order</h4>
+          <ol>
+            <li><span>Pick a section above, then <b>tap any item</b> to see its sizes, prices and tasting notes.</span></li>
+            <li><span>Order with our staff at your table or at the bar.</span></li>
+            <li><span>Bottle sets include <b>1 hour of karaoke</b>. To reserve a room or pool table, call <a href="tel:+97677808800">7780-8800</a> or <a href="tel:+97695368272">9536-8272</a>.</span></li>
+            <li><span>Alcohol is for guests <b>18+</b>. Please have your ID ready.</span></li>
+          </ol>
+        </div>
+      </aside>
+    </div>
+    <p class="note">Brand logos belong to their owners and appear only to show which brands we pour. 18+ only for alcohol; ID may be checked.</p>
+  </div>
+</section>
+
+<section id="play">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Billiards &amp; <em>karaoke</em></h2>
+      <p>Hourly rates. Call 7780-8800 or 9536-8272 to book, or walk in if a table is free.</p>
+    </div>
+    <div class="play">
+      <div class="venue tilt" style="--accent:var(--green)">
+        <h3>Billiards</h3>
+        <p class="sub">4 tournament-size 9ft tables, cues and chalk included.</p>
+        <ul class="rates" id="rateBilliards"></ul>
+      </div>
+      <div class="venue tilt" style="--accent:var(--pink)">
+        <h3>Karaoke</h3>
+        <p class="sub">Private rooms with a 60,000+ song library, wireless mics and lighting. Every bottle set includes one karaoke hour.</p>
+        <ul class="rates" id="rateKaraoke"></ul>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section id="book">
+  <div class="wrap">
+    <div class="call">
+      <div>
+        <span class="kicker" style="color:var(--popo-yellow);border-color:color-mix(in srgb,var(--popo-yellow) 40%,transparent)"><i style="background:var(--popo-yellow);box-shadow:0 0 10px var(--popo-yellow)"></i>Захиалга · Bookings</span>
+        <h2 style="margin-top:16px">Call <a href="tel:+97677808800">7780-8800</a> or <a href="tel:+97695368272">9536-8272</a> to book</h2>
+        <p>Pool tables, karaoke rooms and bottle sets. We'll confirm your time on the phone.</p>
+      </div>
+      <div class="calls">
+        <a class="cta" href="tel:+97677808800"><svg viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg>7780-8800</a>
+        <a class="cta alt" href="tel:+97695368272"><svg viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg>9536-8272</a>
+      </div>
+    </div>
+    <div class="contact">
+      <div class="cc"><h5>Захиалга өгөх</h5><p><a href="tel:+97677808800">7780-8800</a> · <a href="tel:+97695368272">9536-8272</a></p><small>Bookings</small></div>
+      <div class="cc"><h5>Хаяг</h5><p>Их наяд плаза /Баруун/ — 5 давхар</p><small>Ulaanbaatar</small></div>
+      <div class="cc"><h5>Өдөр бүр</h5><p>Өглөө 11:00 – Шөнө 02:00</p><small>Open every day, 11:00 – 02:00</small></div>
+      <div class="cc"><h5>Facebook</h5><p><a href="https://www.facebook.com/popoentertainment" target="_blank" rel="noopener">facebook.com/popoentertainment</a></p><small>Contact: <a href="tel:+97677808800">+976 7780 8800</a></small></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div><span class="brand"><small>ENTERTAINMENT</small><b>POPO</b></span><p style="margin-top:12px">taste · play · enjoy</p></div>
+    <div><h5>Цагийн хуваарь</h5><p>Өдөр бүр: Өглөө 11:00 – Шөнө 02:00</p></div>
+    <div><h5>Холбоо барих</h5><p>Их наяд плаза /Баруун/ — 5 давхар</p><p>Захиалга: <a href="tel:+97677808800">7780-8800</a> · <a href="tel:+97695368272">9536-8272</a></p><p><a href="https://www.facebook.com/popoentertainment" target="_blank" rel="noopener">Facebook · popoentertainment</a></p></div>
+    <p class="age">Please drink responsibly. Alcohol is served only to guests 18 and over.</p>
+  </div>
+</footer>
+
+<script>
+const CONFIG = { openHour: 11, closeHour: 26 };   // every day 11:00 – 02:00
+const RES = [
+  {kind:"billiards",name:"Table 1",rate:25000,note:"Standard"},
+  {kind:"billiards",name:"Table 2",rate:25000,note:"Standard"},
+  {kind:"billiards",name:"Table 3",rate:25000,note:"Standard"},
+  {kind:"billiards",name:"VIP Table",rate:35000,note:"Private corner, lounge seating"},
+  {kind:"karaoke",name:"Room S",rate:40000,note:"Up to 6 guests"},
+  {kind:"karaoke",name:"Room M",rate:60000,note:"Up to 12 guests"},
+  {kind:"karaoke",name:"VIP Room",rate:90000,note:"Up to 20 guests, bar service"}
+];
+
+/* Real brand logos (from Wikimedia), shipped with the page in logos/. Brands not listed here show their name only.
+   Dark marks are shown reversed in white ("mono") so they sit on the dark background; colourful marks keep their colours. */
+const LOGO = {cocacola:0,sprite:0,fanta:0,heineken:0,tiger:0,tsingtao:0,budweiser:0,
+  goe:0,sengur:0,millenia:1,maisoncastel:1,casillero:1,
+  chinggis:0,cass:0,bonaqua:0,espolon:0,sierra:0,tenjaku:0,toso:0,cecchi:0,barrister:1,bisquit:1,zubrowka:1,
+  schweppes:1,asahi:1,corona:1,jackdaniels:1,jameson:1,wildturkey:1,glenmorangie:1,johnniewalker:1,hennessy:1,beluga:1,jagermeister:1,faustino:1,moet:1,finlandia:1};
+const logoSrc = k => `logos/${k}.png`;
+const logoImg = (k, alt) => `<img src="${logoSrc(k)}" alt="${esc(alt)} logo"${LOGO[k] ? ' class="mono"' : ""} loading="lazy">`;
+
+/* ===== Menu data: POPO_Menu.xlsx (145 rows). p = price, or [[size, price], ...] ===== */
+const S7 = (a,b) => [["0.7L",a],["1L",b]];
+const MENU = [
+ {id:"food", tab:"Food", script:"Food Menu", view:"food", cats:[
+  {c:"Pizza & Appetizer", items:[
+   {n:"Mixed Pizza",p:38000,m:"pizza:mix"},
+   {n:"Pepperoni Pizza",p:38000,m:"pizza:pep"},
+   {n:"Cheese Pizza",p:35000,m:"pizza:cheese"},
+   {n:"Mini Sausage & French Fries",p:22000,m:"fries:sausage"},
+   {n:"French Fries",p:16000,m:"fries"}]},
+  {c:"Main Course", items:[
+   {n:"Spicy Fried Chicken",p:23000,m:"chicken:spicy"},
+   {n:"Sweet Fried Chicken",p:23000,m:"chicken:sweet"},
+   {n:"Chicken Nuggets",p:23000,m:"chicken:nugget"},
+   {n:"Burger",p:24500,m:"burger"},
+   {n:"Toig Soup",p:28000,m:"soup"},
+   {n:"Mini Khuushuur",t:"12 ширхэг",p:26000,m:"khuushuur"},
+   {n:"Tsuivan",p:26000,m:"tsuivan"}]},
+  {c:"Salad", items:[
+   {n:"Green Salad",p:24000,m:"salad:green"},
+   {n:"Steak Salad",p:28000,m:"salad:steak"},
+   {n:"Caesar Salad",p:24000,m:"salad:caesar"}]},
+  {c:"Main Course · Platters", items:[
+   {n:"Meat Platter",t:"3–5 хүнд",d:"3-5 хүний махан цуглуулга, хятад шорлог, шинэ ногооны салад",p:180000,m:"platter"},
+   {n:"Mega Meat Platter",t:"4–6 хүнд",d:"4-6 хүний махан цуглуулга, 12 инчийн пицца, хятад шорлог, шинэ ногооны салад",p:260000,m:"platter:mega"}]}
+ ]},
+ {id:"coffee", tab:"Coffee & Tea", script:"Non-Alc Drinks Menu", cats:[
+  {c:"Coffee", items:[
+   {n:"Latte",p:9000,m:"coffee:latte"},
+   {n:"Americano",p:8000,m:"coffee:black"},
+   {n:"Vanilla Latte",p:10000,m:"coffee:vanilla"},
+   {n:"Iced Latte",p:9000,m:"iced:latte"},
+   {n:"Iced Americano",p:8000,m:"iced:black"}]},
+  {c:"Ice tea", items:[
+   {n:"Pineapple Passion Fruit",p:12000,m:"icetea:pine"},
+   {n:"Lychee Green Tea",p:12000,m:"icetea:lychee"},
+   {n:"Pomelo Green Tea",p:12000,m:"icetea:pomelo"}]},
+  {c:"Smoothie, Shakes", items:[
+   {n:"Banana Shake",p:12000,m:"smoothie:banana"},
+   {n:"Mango Pomelo Sago Smoothie",p:12000,m:"smoothie:mango"}]},
+  {c:"Kettle Tea / Гүцтэй цай", items:[
+   {n:"Mixed Berry Hot Tea",p:15000,m:"teapot"}]}
+ ]},
+ {id:"soft", tab:"Soft Drinks", script:"Soft Drink Menu", cats:[
+  {c:"Soft Drinks", items:[
+   {n:"Coke",p:7500,logo:"cocacola",m:{k:"can",col:"#e41e2b"}},
+   {n:"Sprite",p:7500,logo:"sprite",m:{k:"can",col:"#00a651"}},
+   {n:"Fanta",p:7500,logo:"fanta",m:{k:"can",col:"#ff8200"}},
+   {n:"Schweppes +C",p:7500,logo:"schweppes",m:{k:"can",col:"#f2c500"}}]},
+  {c:"ГОЁ", note:"juice & tea", items:[
+   {n:"ГОЁ Лууван жүүс",logo:"goe",p:4000,m:{k:"pet",liq:"#f28a1e",cap:"#2f9e44"}},
+   {n:"ГОЁ Анар жүүс",logo:"goe",p:4000,m:{k:"pet",liq:"#b3122e",cap:"#2f9e44"}},
+   {n:"ГОЁ Цагаан усан үзэм жүүс",logo:"goe",p:4000,m:{k:"pet",liq:"#e6e08a",cap:"#2f9e44"}},
+   {n:"ГОЁ Үзэмний шүүс",logo:"goe",p:4000,m:{k:"pet",liq:"#6b1f4f",cap:"#2f9e44"}},
+   {n:"ГОЁ Цай / Лемон /",logo:"goe",p:4000,m:{k:"pet",liq:"#d9a63a",cap:"#2f9e44"}},
+   {n:"ГОЁ Цай / Тоор /",logo:"goe",p:4000,m:{k:"pet",liq:"#e9925a",cap:"#2f9e44"}}]},
+  {c:"More soft drinks & water", items:[
+   {n:"Multi Vitamin",p:4000,m:{k:"pet",liq:"#ffa42b",cap:"#ff7a00"}},
+   {n:"Natura",p:6000,m:{k:"pet",liq:"#dff3ff",cap:"#1f7ae0",water:1}},
+   {n:"Target Energy Drink",p:7900,m:{k:"can",col:"#13235e"}},
+   {n:"Soda",p:7500,m:{k:"can",col:"#5bc0eb"}},
+   {n:"Tonic",p:7500,m:{k:"can",col:"#9adbc5"}},
+   {n:"Dayao",p:7500,m:{k:"can",col:"#f4a300"}},
+   {n:"Bon Aqua",logo:"bonaqua",p:3000,m:{k:"pet",liq:"#e6f6ff",cap:"#0b63c5",water:1}},
+   {n:"Millenia Still / Sparkling",logo:"millenia",p:4600,m:{k:"pet",liq:"#e6f6ff",cap:"#1aa3d9",water:1}},
+   {n:"Serene",p:4500,m:{k:"pet",liq:"#e6f6ff",cap:"#6cc4ee",water:1}}]}
+ ]},
+ {id:"beer", tab:"Beer", script:"Beer Menu", cats:[
+  {c:"Draft Beer", items:[
+   {n:"Chinggis Draft Beer",logo:"chinggis",sz:"0.5L",p:13900,m:"pint"},
+   {n:"Sengur Draft Beer",logo:"sengur",p:10900,m:"pint"}]},
+  {c:"Canned Beer", items:[
+   {n:"Sengur",sz:"0.5L",logo:"sengur",p:9900,m:{k:"can",col:"#1e5bb8",tall:1}},
+   {n:"Heineken",sz:"0.5L",p:9900,logo:"heineken",m:{k:"can",col:"#00843d",tall:1}},
+   {n:"Tiger",sz:"0.5L",p:9900,logo:"tiger",m:{k:"can",col:"#0b3d91",tall:1}},
+   {n:"Tsingtao",sz:"0.5L",p:9900,logo:"tsingtao",m:{k:"can",col:"#0a7a3a",tall:1}},
+   {n:"Cass",logo:"cass",sz:"0.5L",p:9900,m:{k:"can",col:"#1f4fa3",tall:1}},
+   {n:"Asahi",sz:"0.5L",p:12500,logo:"asahi",m:{k:"can",col:"#9aa3ad",tall:1}}]},
+  {c:"Bottled Beer", items:[
+   {n:"Tsingtao",sz:"0.64L",p:12500,logo:"tsingtao",m:{k:"bottle",s:"beer",g:"#1f6b2c"}},
+   {n:"Heineken",sz:"0.5L",p:12900,logo:"heineken",m:{k:"bottle",s:"beer",g:"#0f6a2a"}},
+   {n:"Kaltenberg",sz:"0.5L",p:12500,m:{k:"bottle",s:"beer",g:"#5a2e0c"}},
+   {n:"Altangovi",sz:"0.5L",p:12900,m:{k:"bottle",s:"beer",g:"#5a2e0c"}},
+   {n:"Budweiser",sz:"0.5L",p:14500,logo:"budweiser",m:{k:"bottle",s:"beer",g:"#5a2e0c"}},
+   {n:"Corona",sz:"0.5L",p:14500,logo:"corona",m:{k:"bottle",s:"beer",g:"#f6f3e4",clear:1,lime:1,liq:"#f0b93a"}},
+   {n:"Asahi",sz:"0.33L",p:14500,logo:"asahi",m:{k:"bottle",s:"beer",g:"#4a260a"}},
+   {n:"Sengur, Tiger, Super Light, Niislel Light",logo:["sengur","tiger"],p:10900,m:{k:"bottle",s:"beer",g:"#5a2e0c"}}]}
+ ]},
+ {id:"cocktails", tab:"Cocktails", script:"Cocktail Menu", cats:[
+  {c:"Cocktail", items:[
+   {n:"Margarita",p:30000,stars:[["Alcohol-ны амт",3],["Чихэрлэг",2],["Исгэлэн амт",4]],d:"Tequila 50ml, Cointreau 20ml, Lemon Juice 15ml",m:"cocktail:margarita"},
+   {n:"Negroni",p:32000,stars:[["Alcohol-ны амт",4],["Чихэрлэг",2],["Гашуун амт",4.5]],d:"Gin 30ml, Campari 30ml, Sweet Vermouth 30ml",m:"cocktail:negroni"},
+   {n:"Espresso Martini",p:30000,stars:[["Alcohol-ны амт",3],["Чихэрлэг",3],["Кофе-ны амт",4.5]],d:"Espresso 30ml, Vodka 60ml, Coffee Liquor 15ml, Simple Syrup 15ml",m:"cocktail:espresso"},
+   {n:"Whiskey Sour",p:30000,stars:[["Alcohol-ны амт",3.5],["Чихэрлэг",3],["Исгэлэн амт",4]],d:"Whiskey 60ml, Lemon Juice 30ml, Simple Syrup 20ml",m:"cocktail:sour"},
+   {n:"Apero Spritz",p:30000,stars:[["Alcohol-ны амт",2],["Чихэрлэг",3],["Исгэлэн амт",1.5]],d:"Aperol 60ml, Prosecco 90ml, Soda 30ml",m:"cocktail:spritz"}]}
+ ]},
+ {id:"sets", tab:"Sets", script:"Set Menu", cats:[
+  {c:"Set · includes 1 hour of karaoke", items:[
+   {n:"Whiskey Set",p:S7(430000,480000),logo:["jackdaniels","jameson"],list:["Jack Daniels / Jameson","Soft Drinks × 6","Bon Aqua × 6","Snack Platter","+ Karaoke One Hour"],m:"set:whiskey"},
+   {n:"Gin Set",logo:"barrister",p:310000,list:["Barrister 0.7 L","Tonic × 6","Bon Aqua × 6","Snack Platter","+ Karaoke One Hour"],m:"set:gin"},
+   {n:"Vodka Set",p:S7(310000,350000),logo:"finlandia",list:["Finlandia","Soft Drinks × 6","Bon Aqua × 6","Snack Platter","+ Karaoke One Hour"],m:"set:vodka"},
+   {n:"Soju Set",logo:"cass",p:210000,list:["Soju × 3","Cass Fresh × 12","Snack Platter","+ Karaoke One Hour"],m:"set:soju"}]}
+ ]},
+ {id:"shots", tab:"Shots", script:"Shot Menu", cats:[
+  {c:"Whiskey Shots", note:"50 gramm", items:[
+   {n:"Jack Daniels No.7",sz:"50g",p:23000,logo:"jackdaniels",m:"shot:whiskey"},
+   {n:"Jameson",sz:"50g",p:24500,logo:"jameson",m:"shot:whiskey"},
+   {n:"Johnnie Walker Red",sz:"50g",p:23900,logo:"johnniewalker",m:"shot:whiskey"},
+   {n:"Wild Turkey",sz:"50g",p:23900,logo:"wildturkey",m:"shot:whiskey"},
+   {n:"Glen Morangie",sz:"50g",p:29900,logo:"glenmorangie",m:"shot:whiskey"}]},
+  {c:"Vodka Shots", note:"50 gramm", items:[
+   {n:"Velvet",sz:"50g",p:10000,m:"shot:vodka"},
+   {n:"Eden",sz:"50g",p:10000,m:"shot:vodka"},
+   {n:"Finlandia",sz:"50g",p:18000,logo:"finlandia",m:"shot:vodka"},
+   {n:"Zubrowka",logo:"zubrowka",sz:"50g",p:15000,m:"shot:vodka"}]},
+  {c:"Tequila & Gin Shots", note:"50 gramm", items:[
+   {n:"Sierra Silver",logo:"sierra",sz:"50g",p:19000,m:"shot:tequila"},
+   {n:"Sierra Reposado Gold",logo:"sierra",sz:"50g",p:19000,m:"shot:tequila"},
+   {n:"Espolòn Reposado",logo:"espolon",sz:"50g",p:23000,m:"shot:tequila"},
+   {n:"Espolòn Blanco",logo:"espolon",sz:"50g",p:23000,m:"shot:tequila"},
+   {n:"Founder Gin",sz:"50g",p:18000,m:"highball:gt"},
+   {n:"Barrister Dry Gin",logo:"barrister",sz:"50g",p:15000,m:"highball:gt"},
+   {n:"Gin Tonic",t:"50g Gin + Tonic",p:20000,m:"highball:gt"}]},
+  {c:"Highballs", items:[
+   {n:"Whiskey Highball",t:"whiskey + soda",p:20000,m:"highball:whiskey"},
+   {n:"Tequila Highball",t:"tequila + soda",p:20000,m:"highball:tequila"},
+   {n:"Vodka Highball",t:"vodka + soda",p:20000,m:"highball:vodka"},
+   {n:"Gin Highball",t:"gin + soda",p:20000,m:"highball:gin"}]}
+ ]},
+ {id:"whiskey", tab:"Whiskey", script:"Whiskey Menu", cats:[
+  {c:"Whiskey", items:[
+   {n:"Jack Daniel's",t:"Tennessee Whiskey",p:S7(280000,380000),logo:"jackdaniels",a:"Амт : Манайд худалдаалагдаж буй төрөл болох Old No. 7 нь карамель, ваниль, царсны модны өнгө аяс бүхий амттай.",m:{k:"bottle",s:"square",liq:"#8a4a12",lbg:"#000",cap:"#111"}},
+   {n:"Jameson",t:"Irish Whiskey",p:S7(290000,390000),logo:"jameson",a:"Амт : Зөөлөн, ваниль, жимслэг, бага зэрэг самарлаг өнгө аяс бүхий амттай.",m:{k:"bottle",s:"whiskey",g:"#1d4d2b",cap:"#151515",band:"#1d4d2b"}},
+   {n:"Wild Turkey",t:"Kentucky Straight Bourbon Whiskey",p:S7(290000,390000),logo:"wildturkey",a:"Амт : Карамель, ваниль, модлог, халуун ногооны өнгө аяс бүхий амттай.",m:{k:"bottle",s:"whiskey",liq:"#9a4f12",cap:"#5a3216",band:"#5a3216"}},
+   {n:"Glen Morangie",t:"Single Malt Scotch Whisky",p:[["0.7L",530000]],logo:"glenmorangie",a:"Амт : Зөөлөн, цэцэглэг, жимслэг амт болон царс модны өнгө аяс бүхий амттай.",m:{k:"bottle",s:"tall",liq:"#d39b2a",cap:"#2b2b2b",band:"#b08a3c"}},
+   {n:"Johnnie Walker Black",t:"Blended Scotch Whisky",p:[["0.7L",330000]],logo:"johnniewalker",a:"Амт : Утаат, ваниль, карамель, жимслэг, бага зэрэг модлог өнгө аяс бүхий амттай.",m:{k:"bottle",s:"square",liq:"#7a3d0e",cap:"#111",band:"#111",bandTxt:"BLACK LABEL"}},
+   {n:"Johnnie Walker Red",t:"Blended Scotch Whisky",p:[["0.7L",280000]],logo:"johnniewalker",a:"Амт : Утаат, халуун ногоотой, бага зэрэг жимслэг, модлог өнгө аяс бүхий амттай.",m:{k:"bottle",s:"square",liq:"#a5561a",cap:"#b3121b",band:"#b3121b",bandTxt:"RED LABEL"}},
+   {n:"Tenjaku",logo:"tenjaku",t:"Japanese Blended Whisky",p:[["0.7L",280000]],a:"Амт : Ваниль, лийр, хөнгөн жимслэг, халуун ногоо, модлог өнгө аяс бүхий амттай.",m:{k:"bottle",s:"whiskey",liq:"#c98a2a",cap:"#222"}},
+   {n:"Tenjaku Pure Malt",logo:"tenjaku",t:"Japanese Pure Malt Whisky",p:[["0.7L",310000]],a:"Амт : Ваниль, зөгийн бал, хатаасан жимс, царсны мод, бага зэрэг утаат өнгө аяс бүхий амттай",m:{k:"bottle",s:"whiskey",liq:"#b3701c",cap:"#111",lbg:"#161616"}}]}
+ ]},
+ {id:"cognac", tab:"Cognac & Brandy", script:"Cognac & Brandy Menu", cats:[
+  {c:"Cognac & Brandy", items:[
+   {n:"Hennessy V.S",t:"Cognac",p:[["0.7L",510000]],logo:"hennessy",a:"Амт : Жимслэг, ваниль, царсны мод, халуун ногооны өнгө аяс бүхий амттай.",m:{k:"bottle",s:"cognac",liq:"#6e2a08",cap:"#1a1a1a",band:"#1a1a1a",bandTxt:"V.S"}},
+   {n:"Hennessy V.S.O.P",t:"Cognac",p:[["0.7L",600000]],logo:"hennessy",a:"Амт : Ваниль, хатаасан жимс, шанцай, царсны мод, зөгийн балны өнгө аяс бүхий амттай.",m:{k:"bottle",s:"cognac",liq:"#7a300a",cap:"#7a1020",band:"#7a1020",bandTxt:"V.S.O.P"}},
+   {n:"Hennessy X.O",t:"Cognac",p:[["0.7L",1600000]],logo:"hennessy",a:"Амт : Хатаасан жимс, хар шоколад, какао, халуун ногоо, царсны модны баялаг өнгө аяс бүхий амттай.",m:{k:"bottle",s:"xo",liq:"#5c2206",cap:"#c9a24a",band:"#c9a24a",bandTxt:"X.O"}},
+   {n:"Bisquit V.S.O.P",logo:"bisquit",t:"Cognac",p:[["0.7L",510000]],a:"Амт : Хатаасан жимс, ваниль, зөгийн бал, царсны мод, хөнгөн халуун ногооны өнгө аяс бүхий амттай.",m:{k:"bottle",s:"cognac",liq:"#8a3d0c",cap:"#3a1d10",band:"#c9a24a"}}]}
+ ]},
+ {id:"tequila", tab:"Tequila & Liqueur", script:"Tequila & Liqueur Menu", serve:true, cats:[
+  {c:"Tequila", items:[
+   {n:"Espolòn Reposado",logo:"espolon",t:"Tequila / Дээд зэрэглэлийн /",p:[["0.7L",350000]],a:"Амт : Модон торхонд хэдэн сар амраадаг. Ваниль, карамель, модлог амттай.",m:{k:"bottle",s:"tequila",liq:"#d9a441",cap:"#222"}},
+   {n:"Espolòn Blanco",logo:"espolon",t:"Tequila / Дээд зэрэглэлийн /",p:[["0.7L",350000]],a:"Амт : Торхонд амраадаггүй. Цэвэр агава, цитрус, перецийн шинэхэн амттай.",m:{k:"bottle",s:"tequila",liq:"#f4f8fb",cap:"#222",clear:1}},
+   {n:"Sierra Reposado Gold",logo:"sierra",t:"Tequila",p:S7(250000,310000),a:"Амт : Модон торхонд хэдэн сар амраадаг. Ваниль, карамелийн зөөлөн өнгө аяс бүхий амттай.",m:{k:"bottle",s:"sierra",liq:"#e0a52a",hat:"#c41e2a"}},
+   {n:"Sierra Silver",logo:"sierra",t:"Tequila",p:S7(250000,310000),a:"Амт : Торхонд амраадаггүй бөгөөд шинэхэн цэвэр агавагийн амттай.",m:{k:"bottle",s:"sierra",liq:"#f4f8fb",clear:1,hat:"#c41e2a"}}]},
+  {c:"Liqueur", items:[
+   {n:"Jägermeister",t:"Liqueur",p:S7(220000,270000),logo:"jagermeister",a:"Амт : 56 төрлийн ургамал, жимс, үндэс, амтлагчийн ханд агуулсан. Цитрус, чихэр өвс, шанцай, халуун ногооны өнгө аяс бүхий амттай.",m:{k:"bottle",s:"jager",g:"#1d3b1a",cap:"#d9d9d9",band:"#e86a10"}}]}
+ ]},
+ {id:"gin", tab:"Gin", script:"Gin Menu", cats:[
+  {c:"Gin", items:[
+   {n:"Barrister Dry",logo:"barrister",t:"London Dry Gin",p:[["0.7L",190000]],a:"Амт : Сонгодог Gin. Арцны тод үнэр, цитрус жимсний шинэхэн өнгө аяс бүхий ургамлын зөөлөн амттай.",m:{k:"bottle",s:"gin",liq:"#f4f8fb",clear:1,cap:"#cfcfcf"}},
+   {n:"Barrister Pink",logo:"barrister",t:"Pink Gin",p:[["0.7L",200000]],a:"Амт : Зөөлөн, жимслэг амттай. Жимсгэнэ, цитрусын чихэрлэг өнгө аяс бүхий. Энгийн жингээс илүү зөөлөн.",m:{k:"bottle",s:"gin",liq:"#f39bb6",cap:"#cfcfcf",band:"#e07aa0"}},
+   {n:"Barrister Blue",logo:"barrister",t:"Flavored / Colored Gin",p:[["0.7L",200000]],a:"Амт : Цэвэр Gin-ийн суурь амт дээр цитрус, ургамлын зөөлөн өнгө аяс бүхий шинэлэг амттай.",m:{k:"bottle",s:"gin",liq:"#6cc6ef",cap:"#cfcfcf",band:"#3a8fd0"}},
+   {n:"Founder",t:"Mongolian Premium Craft Gin",p:[["0.7L",220000]],a:"Амт : Альфа спирт, арц, кориандрын үр, анжелика үндэс, жүржийн хальс, хушны самар, үхрийн нүд, чихэр өвс агуулсан сонирхолтой шинэлэг амттай.",m:{k:"bottle",s:"gin",liq:"#f4f8fb",clear:1,cap:"#6b4a2b",lbg:"#efe3cf"}}]}
+ ]},
+ {id:"vodka", tab:"Vodka", script:"Vodka Menu", cats:[
+  {c:"Vodka", items:[
+   {n:"Eden",t:"Premium Vodka",p:S7(95000,125000),a:"Гарал : Монголд АПУ ХК-д үйлдвэрлэдэг. Дотоодын зах зээлд танигдсан, дээд зэрэглэлийн улаан буудайн спирт болон анар жимсний ханд ашиглан үйлдвэрлэдэг. Дотоодын Архи.",m:{k:"bottle",s:"vodka",clear:1,cap:"#8a1030"}},
+   {n:"Finlandia",t:"Premium Vodka",p:S7(210000,260000),logo:"finlandia",a:"Гарал : Финлянд улсад үйлдвэрлэдэг, дэлхийд алдартай премиум водка. Цэвэр мөсөн голын ус, Финляндын арвайгаар үйлдвэрлэдэг. Импортын Архи.",m:{k:"bottle",s:"vodka",clear:1,cap:"#1b2a4a"}},
+   {n:"Beluga",t:"Ultra-premium Vodka",p:S7(450000,570000),logo:"beluga",a:"Гарал : Орос улсад үйлдвэрлэдэг. Олон шатны шүүлтүүр, боловсруулалттайгаар гаргаж авдаг дэлхийд танигдсан премиум водка. Дээд зэрэглэлийн үр тарианы спирт болон цэвэршүүлсэн артезиан ус ашиглан үйлдвэрлэдэг. Импортын Архи.",m:{k:"bottle",s:"vodka",clear:1,cap:"#111"}},
+   {n:"Velvet",t:"Premium Vodka",p:[["0.7L",135000]],a:"Гарал : Монголд АПУ ХК-д үйлдвэрлэдэг. Үр тарианы спирт болон цэвэршүүлсэн ус ашиглан гаргадаг зөөлөн бүтэцтэй премиум зэрэглэлийн Дотоодын Архи.",m:{k:"bottle",s:"vodka",g:"#141414",cap:"#111",lbg:"#161616"}},
+   {n:"Żubrówka Biala",logo:"zubrowka",t:"Pure Vodka",p:[["0.7L",120000]],a:"Гарал : Польш улсад үйлдвэрлэдэг. Үр тарианы спирт болон цэвэршүүлсэн ус ашиглан гарган авдаг тунгалаг, цэвэрхэн амттай, зөөлөн бүтэцтэй. Импортын Архи.",m:{k:"bottle",s:"vodka",clear:1,cap:"#c0c0c0"}},
+   {n:"Żubrówka Bison Grass",logo:"zubrowka",t:"Flavored Vodka",p:[["0.7L",140000]],a:"Гарал : Польш улсад үйлдвэрлэдэг. Үр тарианы спирт, цэвэршүүлсэн ус болон Бисон өвсний ханд ашиглан гарган авдаг өвөрмөц ургамлын үнэр, зөөлөн амтаараа алдартай сонгодог төрөл. Импортын Архи.",m:{k:"bottle",s:"vodka",liq:"#e8e6a0",cap:"#2e6b2a",grass:1}}]}
+ ]},
+ {id:"wine", tab:"Wine", script:"Wine Menu", cats:[
+  {c:"Red Wine", items:[
+   {n:"Maison Castel Cabernet Sauvignon",logo:"maisoncastel",t:"Dry Red Wine",p:[["0.7L",98000]],a:"Гарал : Францын уламжлалт дарс үйлдвэрлэлийн арга барилаар хийсэн. 100% Cabernet Sauvignon усан үзмээр гарган авсан улаан дарс бөгөөд улаан мах, шарсан мах, бяслагтай хослуулахад тохиромжтой.",m:{k:"bottle",s:"wine",g:"#1a2410",cap:"#5a0f1a"}},
+   {n:"Casillero Del Diablo Merlot",logo:"casillero",t:"Dry Red Wine",p:[["0.7L",95000]],a:"Гарал : Чилийн уламжлалт дарс үйлдвэрлэлийн арга барилаар хийсэн. 100% Merlot сортын усан үзмээр гарган авсан улаан дарс бөгөөд үхэр, гахайн мах, паста, пицца болон бяслагтай хослуулахад тохиромжтой.",m:{k:"bottle",s:"wine",g:"#1a2410",cap:"#111",lbg:"#121212"}},
+   {n:"Toscana Sangiovese",t:"Dry Red Wine",p:[["0.7L",85000]],a:"Гарал : Италийн Тоскана бүсийн уламжлалт дарс үйлдвэрлэлийн арга барилаар хийсэн. 100% Sangiovese сортын усаг үзмээр гарган авсан улаан дарс бөгөөд паста, пицца, шарсан мах бяслагтай хослуулахад тохиромжтой.",m:{k:"bottle",s:"wine",g:"#1a2410",cap:"#7a1020"}}]},
+  {c:"White Wine", items:[
+   {n:"Casillero Del Diablo Chardonnay",logo:"casillero",t:"Dry White Wine",p:[["0.7L",110000]],a:"Гарал : Чилийн уламжлалт дарс үйлдвэрлэлийн арга барилаар хийсэн. Chardonnay сортын усан үзмээр гарган авсан цагаан дарс бөгөөд далайн хоол, шарсан тахиа, цөцгийтэй паста болон саладтай хослуулахад тохиромжтой.",m:{k:"bottle",s:"wine",g:"#7d7a2a",liq:"#e9d77a",cap:"#111",lbg:"#121212"}},
+   {n:"Maison Castel Sauvignon Blanc",logo:"maisoncastel",t:"Dry White Wine",p:[["0.7L",85000]],a:"Гарал : Францын уламжлалт дарс үйлдвэрлэлийн арга барилаар хийсэн. Sauvignon Blanc сортын усан үзмээр гарган авсан цагаан дарс бөгөөд далайн хоол, загас, салад, тахианы махтай хослуулахад тохиромжтой.",m:{k:"bottle",s:"wine",g:"#a8a24a",liq:"#efe29a",cap:"#c9c9c9"}},
+   {n:"La Mora Vermentino Maremma Toscana",logo:"cecchi",t:"Dry White Wine",p:[["0.7L",110000]],a:"Гарал : Италийн Тоскана мужийн Маремма бүсийн уламжлалт дарс үйлдвэрлэлийн арга барилаар хийсэн. Vermentino сортын усан үзмээр гарган авсан цагаан дарс бөгөөд далайн хоол, салад, шарсан ногоо болон зөөлөн бяслагтай хослуулахад тохиромжтой.",m:{k:"bottle",s:"wine",g:"#8a8a3a",liq:"#ece08f",cap:"#d8c48a"}}]},
+  {c:"Rosé Wine", items:[
+   {n:"La Mora Rosato Maremma Toscana",logo:"cecchi",t:"Dry Rosé Wine",p:[["0.7L",125000]],a:"Гарал : Италийн Тоскана мужийн Маремма бүсийн уламжлалт дарс үйлдвэрлэлийн арга барилаар хийсэн. Sangiovese, Syrah сортын усан үзмээр гарган авсан розе дарс бөгөөд далайн хоол, салад, хөнгөн паста болон зөөлөн бяслагтай хослуулахад тохиромжтой.",m:{k:"bottle",s:"wine",clear:1,liq:"#f2a283",cap:"#d8c48a"}},
+   {n:"Maison Castel Merlot Rosé",logo:"maisoncastel",t:"Dry Rosé Wine",p:[["0.7L",85000]],a:"Гарал : Францын уламжлалт дарс үйлдвэрлэлийн арга барилаар хийсэн. Merlot сортын зөөлөн, жимслэг онцлогийг илэрхийлсэн розе дарс бөгөөд далайн хоол, салад, шарсан тахиа, хөнгөн паста болон зөөлөн бяслагтай хослуулахад тохиромжтой.",m:{k:"bottle",s:"wine",clear:1,liq:"#f08aa0",cap:"#c9c9c9"}},
+   {n:"Faustino V Rosado Tempranillo",t:"Dry Rosé Wine",p:[["0.7L",99000]],logo:"faustino",a:"Гарал : Испанийн уламжлалт дарс үйлдвэрлэлийн арга барилаар хийсэн. Tempranillo сортын усан үзмээр гарган авсан розе дарс бөгөөд далайн хоол, салад, шарсан тахиа, хөнгөн зууш болон зөөлөн бяслагтай хослуулахад тохиромжтой.",m:{k:"bottle",s:"wine",clear:1,liq:"#f3a0a8",cap:"#e7d9b0"}}]},
+  {c:"Sparkling Wine", items:[
+   {n:"Maison Castel Cuvée Blanche Brut",logo:"maisoncastel",t:"Brut Sparkling Wine",p:[["0.7L",85000]],a:"Гарал : Францын уламжлалт дарс үйлдвэрлэлийн арга барилаар хийсэн. Цагаан усан үзмийн холимог сортоор гарган авсан оргилуун дарс бөгөөд аперитив хэлбэрээр, далайн хоол, хөнгөн зууш, жимс болон зөөлөн бяслагтай хослуулахад тохиромжтой.",m:{k:"bottle",s:"champagne",g:"#1c2614",cap:"#111"}},
+   {n:"Maison Castel Cuvée Rosée Brut",logo:"maisoncastel",t:"Brut Rosé Sparkling Wine",p:[["0.7L",90000]],a:"Гарал : Францын уламжлалт дарс үйлдвэрлэлийн арга барилаар хийсэн. Цагаан & улаан усан үзмийн холимог сортоор гарган авсан розе оргилуун дарс бөгөөд аперитив хэлбэрээр, далайн хоол, хөнгөн зууш, жимс болон зөөлөн бяслагтай хослуулахад тохиромжтой.",m:{k:"bottle",s:"champagne",clear:1,liq:"#f2a0a8",cap:"#d24a6a"}}]},
+  {c:"Champagne", items:[
+   {n:"Toso Fiorelli Fragolino Rosso",logo:"toso",t:"Champagne",p:[["0.7L",95000]],a:"Гарал : Италийн уламжлалт дарс үйлдвэрлэлийн арга барилаар хийсэн. Гүзээлзгэний анхилуун үнэр, жимслэг зөөлөн амттай оргилуун улаан амтат дарс бөгөөд амттан, жимс, хөнгөн зууш болон бяслагтай хослуулахад тохиромжтой.",m:{k:"bottle",s:"champagne",g:"#2a0d12",cap:"#b3122e"}},
+   {n:"Toso Fiorelli Moscato",logo:"toso",t:"Moscato Champagne",p:[["0.7L",80000]],a:"Гарал : Италийн уламжлалт дарс үйлдвэрлэлийн арга барилаар хийсэн. Moscato сортын усан үзмээр гарган авсан оргилуун амтат цагаан дарс. Ихэвчлэн бага зэрэг чихэрлэг бөгөөд жимс, амттан болон хөнгөн хоолтой хослуулахад тохиромжтой.",m:{k:"bottle",s:"champagne",g:"#1c2614",cap:"#e9e2c8"}},
+   {n:"Moët & Chandon Impérial Brut",t:"Brut Champagne",p:[["0.7L",565000]],logo:"moet",a:"Гарал : Францын Champagne бүсийн уламжлалт дарс үйлдвэрлэлийн аргаар хийсэн. Дэлхийд алдартай премиум champagne бөгөөд Pinot Noir, Pinot Meunier, Chardonnay усан үзмээр гарган авсан. Далайн хоол, хөнгөн зууш, зөөлөн бяслаг болон амттантай хослуулна.",m:{k:"bottle",s:"champagne",g:"#1c2614",cap:"#c9a24a",band:"#c9a24a"}},
+   {n:"Moët & Chandon Rosé Impérial",t:"Rosé Champagne",p:[["0.7L",620000]],logo:"moet",a:"Гарал : Францын Champagne бүсийн уламжлалт аргаар үйлдвэрлэсэн, дэлхийд алдартай премиум rosé champagne. Pinot Noir, Pinot Meunier болон Chardonnay усан үзмийн сортуудын хослолоор бүтээгдсэн бөгөөд шинэхэн, жимслэг амт, зөөлөн бүтэцтэй. Далайн хоол, хөнгөн зууш, зөөлөн бяслаг, жимс болон амттантай хослуулна.",m:{k:"bottle",s:"champagne",g:"#1c2614",cap:"#d97a9a",band:"#d97a9a"}}]}
+ ]}
+];
+const SERVE_NOTE = `<b>Tequila:</b> lime &amp; salt · neat or on the rocks · orange &amp; cinnamon<br><b>Liqueur:</b> with coffee &amp; desserts · neat or on the rocks · with a mixer`;
+
+/* ===== helpers ===== */
+const fmt = n => Math.round(n).toLocaleString("en-US") + "₮";
+const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const hh = h => String(h % 24).padStart(2,"0") + ":00";
+const prices = it => typeof it.p === "number" ? [[it.sz || "", it.p]] : it.p;
+const logos = it => it.logo ? [].concat(it.logo) : [];
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+let count = 0;
+MENU.forEach((sec, si) => sec.cats.forEach((cat, ci) => cat.items.forEach((it, ii) => { it.id = `${si}-${ci}-${ii}`; it.sec = sec; count += prices(it).length; })));
+document.getElementById("statItems").textContent = count;
+document.getElementById("heroHours").textContent = String(CONFIG.openHour).padStart(2,"0")+"–"+String(CONFIG.closeHour%24).padStart(2,"0");
+(() => { const h = new Date().getHours(); const open = h >= CONFIG.openHour || h < CONFIG.closeHour - 24;
+  document.getElementById("openState").textContent = open ? "Open now · until " + hh(CONFIG.closeHour) : "Opens today at " + hh(CONFIG.openHour); })();
+
+for (const [kind, el] of [["billiards","rateBilliards"],["karaoke","rateKaraoke"]]) {
+  document.getElementById(el).innerHTML = RES.filter(r => r.kind === kind).map(r =>
+    `<li><span>${esc(r.name)}<small>${esc(r.note)}</small></span><span class="price">${fmt(r.rate)}<small style="display:inline;color:var(--dim);font-family:Manrope"> /hr</small></span></li>`).join("");
+}
+
+/* ===== menu rendering ===== */
+const tabsEl = document.getElementById("tabs"), listEl = document.getElementById("menuList"), infoEl = document.getElementById("info");
+const byId = {};
+MENU.forEach(s => s.cats.forEach(c => c.items.forEach(it => byId[it.id] = it)));
+tabsEl.innerHTML = MENU.map((s, i) => (i === 1 ? `<span class="sep"></span>` : "") +
+  `<button class="tab" role="tab" id="tab-${s.id}" data-sec="${s.id}" aria-controls="menuList">${esc(s.tab)}</button>`).join("");
+
+const chipHtml = it => logos(it).length ? `<span class="chips">${logos(it).map(k => `<span class="lchip">${logoImg(k, it.n)}</span>`).join("")}</span>` : "";
+function cardHtml(it){
+  const sub = it.t || (it.list ? it.list.slice(0,2).join(" · ") : "");
+  const desc = it.d || (it.a ? it.a.replace(/^(Амт|Гарал)\s*:\s*/, "") : "") || (it.list ? it.list.slice(2).join(" · ") : "");
+  return `<button class="item tilt" data-id="${it.id}" aria-pressed="false"><span class="glow"></span>${chipHtml(it)}
+    <span class="nm">${esc(it.n)}</span>${sub ? `<span class="ty">${esc(sub)}</span>` : ""}${desc ? `<span class="ds">${esc(desc)}</span>` : ""}
+    <span class="pr">${prices(it).map(([s,p]) => `<span>${s ? `<small>${esc(s)}</small>` : ""}<span class="price">${fmt(p)}</span></span>`).join("")}</span></button>`;
+}
+
+let curSec = null, curItem = null;
+function showSection(id, {scroll} = {}){
+  const sec = MENU.find(s => s.id === id) || MENU[0];
+  curSec = sec;
+  tabsEl.querySelectorAll(".tab").forEach(t => { const on = t.dataset.sec === sec.id; t.setAttribute("aria-selected", on); if (on && scroll !== false) t.scrollIntoView({block:"nearest",inline:"nearest"}); });
+  listEl.setAttribute("aria-labelledby", "tab-" + sec.id);
+  listEl.innerHTML = `<div class="page-head" aria-hidden="true"><div class="big">POPO</div><div class="circle">${esc(sec.script)}</div></div>` +
+    sec.cats.map(c => `<div class="cat"><h3>${esc(c.c)}</h3>${c.note ? `<span>${esc(c.note)}</span>` : ""}</div><div class="grid">${c.items.map(cardHtml).join("")}</div>`).join("") +
+    (sec.serve ? `<div class="serve">${SERVE_NOTE}</div>` : "");
+  bindTilt(listEl);
+  selectItem(sec.cats[0].items[0].id);
+  if (scroll) document.getElementById("menu").scrollIntoView({behavior: reduce ? "auto" : "smooth"});
+}
+function selectItem(id){
+  const it = byId[id]; if (!it) return;
+  curItem = it;
+  listEl.querySelectorAll(".item").forEach(b => b.setAttribute("aria-pressed", b.dataset.id === id));
+  const ps = prices(it);
+  const desc = it.a ? it.a.replace(/^(Амт|Гарал)\s*:\s*(.*)$/s, (_, k, v) => `<b>${k}:</b> ${esc(v)}`) : it.d ? (it.stars ? `<b>Орц:</b> ` : "") + esc(it.d) : "";
+  infoEl.innerHTML = `<div class="kick"><i></i>${esc(it.sec.tab)}</div>${logos(it).length ? `<div class="logos">${logos(it).map(k => logoImg(k, it.n)).join("")}</div>` : ""}<h3>${esc(it.n)}</h3>${it.t ? `<div class="ty">${esc(it.t)}</div>` : ""}
+    <div class="prices">${ps.map(([s,p]) => `<span>${s ? `<small style="color:var(--dim);font-weight:700;margin-right:6px">${esc(s)}</small>` : ""}<span class="price">${fmt(p)}</span></span>`).join("")}</div>
+    ${it.stars ? `<div class="meters">${it.stars.map(([k,v]) => `<div><span>${esc(k)}</span><span class="stars" style="--v:${v/5*100}%" aria-label="${v} / 5">★★★★★</span></div>`).join("")}</div>` : ""}
+    ${desc ? `<p>${desc}</p>` : ""}
+    ${it.list ? `<ul>${it.list.map(x => `<li>${esc(x)}</li>`).join("")}</ul>` : ""}`;
+}
+tabsEl.addEventListener("click", e => { const b = e.target.closest(".tab"); if (b) showSection(b.dataset.sec); });
+tabsEl.addEventListener("keydown", e => {
+  if (!["ArrowLeft","ArrowRight"].includes(e.key)) return;
+  const tabs = [...tabsEl.querySelectorAll(".tab")], i = tabs.findIndex(t => t.dataset.sec === curSec.id);
+  const n = tabs[(i + (e.key === "ArrowRight" ? 1 : -1) + tabs.length) % tabs.length]; n.focus(); showSection(n.dataset.sec);
+});
+listEl.addEventListener("click", e => { const b = e.target.closest(".item"); if (b) selectItem(b.dataset.id); });
+document.querySelectorAll("[data-jump]").forEach(a => a.addEventListener("click", e => { e.preventDefault(); showSection(a.dataset.jump, {scroll:true}); }));
+
+/* 3D card tilt */
+function bindTilt(root){
+  if (reduce || matchMedia("(hover: none)").matches) return;
+  root.querySelectorAll(".tilt").forEach(el => {
+    if (el._t) return; el._t = 1;
+    el.addEventListener("pointermove", e => {
+      const r = el.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+      el.style.transform = `rotateY(${(x-.5)*12}deg) rotateX(${(.5-y)*12}deg) translateZ(6px)`;
+      el.style.setProperty("--mx", x*100 + "%"); el.style.setProperty("--my", y*100 + "%");
+    });
+    el.addEventListener("pointerleave", () => el.style.transform = "");
+  });
+}
+bindTilt(document);
+
+showSection("food", { scroll: false });
+
+</script>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+<script type="module">
+/* ===== Hero 3D: an ice-cold pint with condensation, and real-looking pool balls ===== */
+import * as THREE from "three";
+import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
+
+const canvas = document.getElementById("scene");
+const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+let renderer;
+try { renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: "high-performance" }); } catch (e) { renderer = null; }
+if (renderer) start();
+
+function start(){
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.0;
+
+  const scene = new THREE.Scene();
+  const pmrem = new THREE.PMREMGenerator(renderer);
+  scene.environment = pmrem.fromScene(new RoomEnvironment(), .03).texture;
+  scene.environmentIntensity = .85;
+
+  const cam = new THREE.PerspectiveCamera(32, 1, .1, 100);
+  cam.position.set(0, 0, 13);
+
+  const key = new THREE.DirectionalLight(0xfff1e0, 2.4); key.position.set(4, 7, 8); scene.add(key);
+  const rimPink = new THREE.PointLight(0xff3fa4, 90, 0, 2); scene.add(rimPink);
+  const rimCyan = new THREE.PointLight(0x2ee6ff, 70, 0, 2); scene.add(rimCyan);
+  const warm = new THREE.PointLight(0xffb347, 25, 0, 2); scene.add(warm);
+
+  const world = new THREE.Group(); scene.add(world);
+  const maxAniso = renderer.capabilities.getMaxAnisotropy();
+
+  /* ---------- the pint ---------- */
+  const H = 3.0, BEER_TOP = 2.36, FOAM_TOP = 2.86;
+  // nonic pint: gentle flare, then the bulge near the rim
+  const R = y => {
+    let r = .555 + (.735 - .555) * Math.min(y, 2.55) / 2.55;
+    if (y > 2.5){ const t = (y - 2.5) / .5; r += Math.sin(Math.min(t, 1) * Math.PI) * .055 - Math.max(0, t - .5) * .02; }
+    return r;
+  };
+  const outerPts = [new THREE.Vector2(0, 0)];
+  for (let i = 0; i <= 140; i++){ const y = i / 140 * H; const corner = Math.min(1, y / .07); outerPts.push(new THREE.Vector2(R(y) - .035 * (1 - Math.sqrt(corner)), y)); }
+
+  // condensation: a tangent-space normal map + roughness map, painted droplet by droplet
+  const TW = 2048, TH = 1536;
+  const nData = new Uint8ClampedArray(TW * TH * 4), rData = new Uint8ClampedArray(TW * TH * 4);
+  const lineRow = Math.round((1 - BEER_TOP / H) * TH) + 30;           // rows below this sit against cold beer
+  for (let i = 0; i < TW * TH; i++){ const row = (i / TW) | 0; const cold = row > lineRow;
+    nData[i*4] = 128; nData[i*4+1] = 128; nData[i*4+2] = 255; nData[i*4+3] = 255;
+    const rough = cold ? 122 : 22; rData[i*4] = rData[i*4+1] = rData[i*4+2] = rough; rData[i*4+3] = 255; }
+  let seed = 1234; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  function drop(cx, cy, r, sq = 1, rough = 8){
+    const ry = r * sq, x0 = Math.floor(cx - r - 1), x1 = Math.ceil(cx + r + 1), y0 = Math.max(0, Math.floor(cy - ry - 1)), y1 = Math.min(TH - 1, Math.ceil(cy + ry + 1));
+    for (let y = y0; y <= y1; y++) for (let xx = x0; xx <= x1; xx++){
+      const dx = (xx - cx) / r, dy = (y - cy) / ry, d2 = dx * dx + dy * dy; if (d2 >= 1) continue;
+      const x = ((xx % TW) + TW) % TW, k = (y * TW + x) * 4;
+      const nz = Math.sqrt(1 - d2), len = Math.hypot(dx * 1.4, dy * 1.4, nz);
+      nData[k] = (dx * 1.4 / len * .5 + .5) * 255; nData[k+1] = (-dy * 1.4 / len * .5 + .5) * 255; nData[k+2] = nz / len * 255;
+      rData[k] = rData[k+1] = rData[k+2] = rough;
+    }
+  }
+  function clearTrail(cx, y0, y1, w){ for (let y = Math.max(0, y0 | 0); y < Math.min(TH, y1); y++){ const wob = Math.sin(y * .05) * 1.5; for (let xx = -w; xx <= w; xx++){ const x = (((cx + xx + wob) | 0) % TW + TW) % TW, k = (y * TW + x) * 4; rData[k] = rData[k+1] = rData[k+2] = 14; } } }
+  // fine mist on the cold part, sparse beads above the beer line
+  for (let i = 0; i < 52000; i++){ const y = lineRow + rnd() * (TH - lineRow); drop(rnd() * TW, y, .9 + rnd() * 2.2, .9 + rnd() * .2, 30); }
+  for (let i = 0; i < 1800; i++){ drop(rnd() * TW, lineRow * rnd(), 1 + rnd() * 3, 1, 10); }
+  for (let i = 0; i < 4200; i++){ const y = lineRow + rnd() * (TH - lineRow); drop(rnd() * TW, y, 2.5 + rnd() * 6, .95 + rnd() * .25, 6); }
+  for (let i = 0; i < 520; i++){ const y = lineRow + rnd() * (TH - lineRow); drop(rnd() * TW, y, 7 + rnd() * 13, 1 + rnd() * .35, 4); }
+  // a few runs: a heavy drop that slid down, leaving a clear trail
+  for (let i = 0; i < 46; i++){ const cx = rnd() * TW, ys = lineRow + rnd() * 300, ye = ys + 180 + rnd() * 700, w = 3 + rnd() * 4;
+    clearTrail(cx, ys, ye, w); for (let y = ys; y < ye; y += 26 + rnd() * 40) drop(cx + Math.sin(y * .05) * 1.5, y, w * (.6 + rnd() * .5), 1.1, 5); drop(cx, Math.min(TH - 20, ye), w * 2.1, 1.35, 3); }
+    // DataTexture rows run bottom-up: flip so row 0 is the rim
+  (function flipRows(){ for (const d of [nData, rData]){ const row = TW * 4, tmp = new Uint8ClampedArray(row); for (let y = 0; y < TH / 2; y++){ const a = y * row, b = (TH - 1 - y) * row; tmp.set(d.subarray(a, a + row)); d.copyWithin(a, b, b + row); d.set(tmp, b); } } })();
+  const normalTex = new THREE.DataTexture(new Uint8Array(nData.buffer), TW, TH);
+  const roughTex = new THREE.DataTexture(new Uint8Array(rData.buffer), TW, TH);
+  for (const t of [normalTex, roughTex]){ t.wrapS = THREE.RepeatWrapping; t.anisotropy = maxAniso; t.generateMipmaps = true; t.minFilter = THREE.LinearMipmapLinearFilter; t.magFilter = THREE.LinearFilter; t.needsUpdate = true; }
+
+  const glass = new THREE.Mesh(new THREE.LatheGeometry(outerPts, 160), new THREE.MeshPhysicalMaterial({
+    color: 0xffffff, metalness: 0, roughness: 1, roughnessMap: roughTex, transmission: 1, thickness: .45, ior: 1.5,
+    normalMap: normalTex, normalScale: new THREE.Vector2(1.1, 1.1), specularIntensity: 1, envMapIntensity: 1.25
+  }));
+  const rim = new THREE.Mesh(new THREE.TorusGeometry(R(H) - .018, .02, 16, 160), new THREE.MeshPhysicalMaterial({ color: 0xffffff, roughness: .02, transmission: 1, thickness: .1, ior: 1.5 }));
+  rim.rotation.x = Math.PI / 2; rim.position.y = H;
+
+  // beer: amber that glows from within, darker at the base
+  const beerCan = document.createElement("canvas"); beerCan.width = 64; beerCan.height = 512; const bg = beerCan.getContext("2d");
+  const grad = bg.createLinearGradient(0, 0, 0, 512);
+  grad.addColorStop(0, "#f9c04a"); grad.addColorStop(.05, "#eda21f"); grad.addColorStop(.4, "#cf7408"); grad.addColorStop(1, "#6e2f03");
+  bg.fillStyle = grad; bg.fillRect(0, 0, 64, 512);
+  const beerTex = new THREE.CanvasTexture(beerCan); beerTex.colorSpace = THREE.SRGBColorSpace;
+  const inset = r => r - .05;
+  const beerPts = [new THREE.Vector2(0, .3)];
+  for (let i = 0; i <= 60; i++){ const y = .3 + (BEER_TOP - .3) * i / 60; beerPts.push(new THREE.Vector2(inset(R(y)), y)); }
+  beerPts.push(new THREE.Vector2(0, BEER_TOP));
+  const beer = new THREE.Mesh(new THREE.LatheGeometry(beerPts, 128), new THREE.MeshPhysicalMaterial({
+    map: beerTex, emissive: 0xff7a00, emissiveMap: beerTex, emissiveIntensity: .38, roughness: .2, clearcoat: .4, clearcoatRoughness: .1
+  }));
+
+  // foam: creamy head with a soft, bubbly dome
+  const foamCan = document.createElement("canvas"); foamCan.width = foamCan.height = 512; const fg = foamCan.getContext("2d");
+  fg.fillStyle = "#808080"; fg.fillRect(0, 0, 512, 512);
+  for (let i = 0; i < 2600; i++){ const x = rnd() * 512, y = rnd() * 512, r = 1 + rnd() * rnd() * 9; const g2 = fg.createRadialGradient(x, y, 0, x, y, r);
+    g2.addColorStop(0, "#5a5a5a"); g2.addColorStop(.75, "#9a9a9a"); g2.addColorStop(1, "rgba(128,128,128,0)"); fg.fillStyle = g2; fg.beginPath(); fg.arc(x, y, r, 0, 6.283); fg.fill(); }
+  const foamBump = new THREE.CanvasTexture(foamCan); foamBump.wrapS = foamBump.wrapT = THREE.RepeatWrapping; foamBump.repeat.set(3, 1);
+  const foamPts = [new THREE.Vector2(0, BEER_TOP - .02)];
+  for (let i = 0; i <= 24; i++){ const y = BEER_TOP - .02 + (FOAM_TOP - BEER_TOP + .02) * i / 24; foamPts.push(new THREE.Vector2(inset(R(y)) + .004, y)); }
+  for (let i = 1; i <= 14; i++){ const t = i / 14, r0 = inset(R(FOAM_TOP)) + .004; foamPts.push(new THREE.Vector2(r0 * Math.cos(t * Math.PI / 2) ** .55, FOAM_TOP + Math.sin(t * Math.PI / 2) * .1)); }
+  const foamGeo = new THREE.LatheGeometry(foamPts, 128);
+  { const p = foamGeo.attributes.position; for (let i = 0; i < p.count; i++){ const x = p.getX(i), y = p.getY(i), z = p.getZ(i); if (y > FOAM_TOP - .02){ const a = Math.atan2(z, x);
+      const n = (Math.sin(a * 9 + y * 30) + Math.sin(a * 23 - x * 14) * .6 + Math.sin(z * 31 + a * 5) * .4) * .009; p.setY(i, y + n); } } foamGeo.computeVertexNormals(); }
+  const foam = new THREE.Mesh(foamGeo, new THREE.MeshPhysicalMaterial({
+    color: 0xfff4dd, roughness: .78, bumpMap: foamBump, bumpScale: 1.2, sheen: 1, sheenRoughness: .45, sheenColor: 0xffffff, emissive: 0x2a2010, emissiveIntensity: .25
+  }));
+
+  // carbonation: streams of bubbles rising against the glass
+  const BUB = 420;
+  const bubbles = new THREE.InstancedMesh(new THREE.SphereGeometry(1, 10, 8), new THREE.MeshPhysicalMaterial({ color: 0xfff2cf, emissive: 0xffc966, emissiveIntensity: .35, roughness: .05, clearcoat: 1 }), BUB);
+  const bub = []; const m4 = new THREE.Matrix4(), q = new THREE.Quaternion(), v3 = new THREE.Vector3(), sc = new THREE.Vector3();
+  for (let i = 0; i < BUB; i++){ const stream = i % 26; bub.push({ a: stream / 26 * Math.PI * 2 + (rnd() - .5) * .05, y: .32 + rnd() * (BEER_TOP - .36), s: .005 + rnd() * .011, v: .25 + rnd() * .5, w: rnd() * 6 }); }
+  function placeBubbles(t, dt){ bub.forEach((b, i) => { if (!still){ b.y += b.v * dt * (1 + b.y * .3); if (b.y > BEER_TOP - .03){ b.y = .32; } }
+    const r = inset(R(b.y)) + .006 + b.s; const a = b.a + Math.sin(t * 2 + b.w) * .004;
+    v3.set(Math.cos(a) * r, b.y, Math.sin(a) * r); sc.setScalar(b.s * (1 + b.y * .15)); m4.compose(v3, q, sc); bubbles.setMatrixAt(i, m4); }); bubbles.instanceMatrix.needsUpdate = true; }
+
+  // beads of water sitting on the outside of the glass
+  const DROPS = 300;
+  const drops = new THREE.InstancedMesh(new THREE.SphereGeometry(1, 20, 14, 0, Math.PI * 2, 0, Math.PI / 2), new THREE.MeshPhysicalMaterial({
+    color: 0xffffff, roughness: 0, transmission: 1, thickness: .06, ior: 1.33, specularIntensity: 1, envMapIntensity: 1.6 }), DROPS);
+  { const up = new THREE.Vector3(0, 1, 0), nrm = new THREE.Vector3();
+    for (let i = 0; i < DROPS; i++){ const y = .2 + Math.pow(rnd(), .8) * (BEER_TOP - .05), a = rnd() * Math.PI * 2, s = .01 + Math.pow(rnd(), 2.2) * .045;
+      const slope = (R(y + .01) - R(y - .01)) / .02; nrm.set(Math.cos(a), -slope, Math.sin(a)).normalize();
+      v3.set(Math.cos(a) * R(y), y, Math.sin(a) * R(y)); q.setFromUnitVectors(up, nrm); sc.set(s, s * .42, s * (1 + rnd() * .5));
+      // stretch some drops downwards, as if they're starting to run
+      if (rnd() < .2){ const tilt = new THREE.Quaternion().setFromAxisAngle(nrm, Math.PI / 2); q.premultiply(tilt); sc.z *= 1.8; }
+      m4.compose(v3, q, sc); drops.setMatrixAt(i, m4); } }
+
+  const pint = new THREE.Group(); pint.add(beer, foam, bubbles, glass, rim, drops);
+  pint.scale.setScalar(1.45);
+
+  /* ---------- pool balls ---------- */
+  const BALL = {1:"#f2b705",2:"#1a3fb8",3:"#d4161f",4:"#5b2390",5:"#f06a0d",6:"#0d7a3a",7:"#7a1414",8:"#0b0b0c",9:"#f2b705",10:"#1a3fb8",11:"#d4161f",12:"#5b2390",13:"#f06a0d",14:"#0d7a3a",15:"#7a1414"};
+  const IVORY = "#f5efdf";
+  function ballMaterial(n){
+    const c = document.createElement("canvas"); c.width = 2048; c.height = 1024; const g = c.getContext("2d");
+    g.fillStyle = n > 8 ? IVORY : BALL[n]; g.fillRect(0, 0, 2048, 1024);
+    if (n > 8){ g.fillStyle = BALL[n]; g.fillRect(0, 1024 * .27, 2048, 1024 * .46); }
+    // faint wear: tiny scuffs that catch the light
+    g.globalAlpha = .05; g.strokeStyle = "#fff"; for (let i = 0; i < 160; i++){ g.lineWidth = .6 + rnd(); g.beginPath(); const x = rnd() * 2048, y = rnd() * 1024; g.moveTo(x, y); g.lineTo(x + (rnd() - .5) * 60, y + (rnd() - .5) * 20); g.stroke(); } g.globalAlpha = 1;
+    const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = maxAniso;
+    return new THREE.MeshPhysicalMaterial({ map: t, roughness: .16, clearcoat: 1, clearcoatRoughness: .025, specularIntensity: .9, envMapIntensity: 1.1 });
+  }
+  function numberMaterial(n){
+    const c = document.createElement("canvas"); c.width = c.height = 512; const g = c.getContext("2d");
+    g.fillStyle = IVORY; g.fillRect(0, 0, 512, 512);
+    g.fillStyle = "#111"; g.textAlign = "center"; g.textBaseline = "middle";
+    g.font = `800 ${n > 9 ? 230 : 300}px "Helvetica Neue", Arial, sans-serif`; g.fillText(String(n), 256, 270);
+    if (n === 6 || n === 9){ g.fillRect(186, 420, 140, 18); }
+    const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = maxAniso;
+    return new THREE.MeshPhysicalMaterial({ map: t, roughness: .16, clearcoat: 1, clearcoatRoughness: .025, specularIntensity: .9, envMapIntensity: 1.1 });
+  }
+  const CAP = .41;
+  function capGeometry(r){
+    const geo = new THREE.SphereGeometry(r * 1.0015, 64, 18, 0, Math.PI * 2, 0, CAP);
+    const p = geo.attributes.position, uv = geo.attributes.uv, span = 2 * r * Math.sin(CAP);
+    for (let i = 0; i < p.count; i++) uv.setXY(i, .5 + p.getX(i) / span, .5 - p.getZ(i) / span);
+    return geo;
+  }
+  function poolBall(n, r){
+    const g = new THREE.Group();
+    g.add(new THREE.Mesh(new THREE.SphereGeometry(r, 128, 96), ballMaterial(n)));
+    const nm = numberMaterial(n), cg = capGeometry(r);
+    const c1 = new THREE.Mesh(cg, nm); c1.rotation.x = Math.PI / 2; g.add(c1);
+    const c2 = new THREE.Mesh(cg, nm); c2.rotation.x = -Math.PI / 2; g.add(c2);
+    return g;
+  }
+  const eight = poolBall(8, 1.0);
+  eight.rotation.set(.25, -.5, .1);
+  const floaters = [1, 9, 3, 12, 5, 14, 2, 11].map((n, i, arr) => {
+    const b = poolBall(n, .5); b.userData = { a: i / arr.length * Math.PI * 2, r: 2.1 + (i % 3) * .55, y: (rnd() - .5) * 4.2, s: .1 + rnd() * .12, z: -3.6 - (i % 2) * 1.8, spin: new THREE.Vector3(rnd(), rnd(), rnd()).multiplyScalar(.006) };
+    b.rotation.set(rnd() * 6, rnd() * 6, 0); world.add(b); return b; });
+
+  world.add(pint, eight);
+  const grid = new THREE.GridHelper(40, 40, 0xff3fa4, 0x2a2545); grid.position.y = -4.5; grid.material.transparent = true; grid.material.opacity = .3; scene.add(grid);
+
+  /* ---------- layout, motion ---------- */
+  let mx = 0, my = 0, dim = 1, cx = 0;
+  addEventListener("pointermove", e => { mx = e.clientX / innerWidth - .5; my = e.clientY / innerHeight - .5; }, { passive: true });
+  function layout(){
+    const w = innerWidth, h = innerHeight; renderer.setSize(w, h, false); cam.aspect = w / h; cam.updateProjectionMatrix();
+    const small = w < 760, k = Math.min(1, (w / h) / 1.6);
+    cx = small ? 1.1 : 3.7 * k;
+    pint.position.set(cx, -2.25, 0); eight.position.set(cx - 1.75, -1.55, 1.3);
+    world.scale.setScalar(small ? .62 : 1); dim = small ? .5 : 1;
+    rimPink.position.set(cx - 2.2, 2.4, -2.5); rimCyan.position.set(cx + 2.4, -.6, -2.2); warm.position.set(cx - .4, -1, 3.2);
+  }
+  addEventListener("resize", layout); layout();
+
+  const menuEl = document.getElementById("menu");
+  const clock = new THREE.Clock();
+  let t = 0;
+  function frame(){
+    requestAnimationFrame(frame);
+    const dt = Math.min(.05, clock.getDelta());
+    if (document.hidden) return;
+    const y = window.scrollY;
+    if (y > innerHeight * 1.3) return;            // the scene is only a faint backdrop past the hero: stop drawing it
+    const r = menuEl.getBoundingClientRect(); if (r.top < innerHeight * .3 && r.bottom > innerHeight * .7) return;
+    if (!still) t += dt;
+    pint.rotation.y = Math.sin(t * .25) * .5 + t * .05;
+    pint.position.y = -2.25 + Math.sin(t * .7) * .06;
+    eight.rotation.y = -.5 + t * .22; eight.rotation.x = .25 + Math.sin(t * .3) * .15;
+    eight.position.y = -1.55 + Math.sin(t * .8 + 1.3) * .08;
+    floaters.forEach(b => { const u = b.userData, a = u.a + t * u.s * .3;
+      b.position.set(cx + .6 + Math.cos(a) * u.r, u.y + Math.sin(t * .6 + u.a) * .2, u.z + Math.sin(a) * 1.0);
+      b.rotation.x += u.spin.x * (still ? 0 : 1); b.rotation.y += u.spin.y * (still ? 0 : 1); });
+    placeBubbles(t, still ? 0 : dt);
+    const prog = Math.min(y / innerHeight, 1.5);
+    cam.position.x += (mx * .9 - cam.position.x) * .05;
+    cam.position.y += (-my * .6 - prog * 1.2 - cam.position.y) * .05;
+    cam.lookAt(0, -prog * 1.2, 0);
+    canvas.style.opacity = String(Math.max(.18, 1 - prog * .55) * dim);
+    renderer.render(scene, cam);
+  }
+  placeBubbles(0, 0);
+  frame();
+}
+</script>
+</body>
+</html>
